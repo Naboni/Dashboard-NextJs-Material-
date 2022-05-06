@@ -36,8 +36,7 @@ const Login = () => {
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
       password: Yup.string().min(8).max(255).required("Password is required"),
     }),
-    onSubmit: (e) => {
-      e.preventDefault();
+    onSubmit: () => {
       setLoggingIn(true);
       setErr("");
       setShowAlert(false);

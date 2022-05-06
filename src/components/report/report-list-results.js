@@ -7,7 +7,6 @@ import {
   Box,
   Card,
   Checkbox,
-  Chip,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +17,7 @@ import {
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
 
-export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
+export const ReportListResults = ({ customers, searchTerm, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -81,11 +80,11 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                     onChange={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Subjects</TableCell>
+                <TableCell>Topics</TableCell>
+                <TableCell>Feedback</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Tutor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -94,7 +93,7 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                 .filter((val) => {
                   if (searchTerm == "") {
                     return val;
-                  } else if (val.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                  } else if (val.tutor.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
                     return val;
                   }
                 })
@@ -111,32 +110,11 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                         value="true"
                       />
                     </TableCell>
-                    <TableCell>
-                      <Box
-                        sx={{
-                          alignItems: "center",
-                          display: "flex",
-                        }}
-                      >
-                        <Avatar
-                          // src={customer.avatarUrl}
-                          sx={{ mr: 2 }}
-                        >
-                          {getInitials(customer.fullName)}
-                        </Avatar>
-                        <Typography color="textPrimary" variant="body1">
-                          {customer.fullName}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{`${customer.location}`}</TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>
-                      {customer.status === "SUCCESS" && <Chip label="SUCCESS" color="success" />}
-                      {customer.status === "FAILED" && <Chip label="SUCCESS" color="error" />}
-                      {customer.status === "PENDING" && <Chip label="PENDING" color="primary" />}
-                    </TableCell>
+                    <TableCell>{customer.subjects}</TableCell>
+                    <TableCell>{`${customer.topics}`}</TableCell>
+                    <TableCell>{customer.feedback}</TableCell>
+                    <TableCell>{customer.reportdate}</TableCell>
+                    <TableCell>{customer.tutor.fullName}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -156,6 +134,6 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
+ReportListResults.propTypes = {
   customers: PropTypes.array.isRequired,
 };

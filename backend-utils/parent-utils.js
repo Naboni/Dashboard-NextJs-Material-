@@ -9,6 +9,29 @@ const getParents = async (token) => {
   return response;
 };
 
+const getAParent = async (token, id) => {
+  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
+const updateParent = async (token, id, parentBody) => {
+  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ ...parentBody }),
+  });
+  return response;
+};
+
 const createParent = async (token, parentBody) => {
   const response = await fetch(`http://localhost:4000/api/v1/parent`, {
     method: "POST",
@@ -23,4 +46,4 @@ const createParent = async (token, parentBody) => {
   return response;
 };
 
-export { getParents, createParent };
+export { getParents, createParent, getAParent, updateParent };

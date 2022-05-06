@@ -24,10 +24,10 @@ const CreateParent = () => {
             Create Parent
           </Typography>
           <Grid container spacing={3}>
-            <Grid item lg={4} md={6} xs={12}>
+            {/* <Grid item lg={4} md={6} xs={12}>
               <AccountProfile />
-            </Grid>
-            <Grid item lg={8} md={6} xs={12}>
+            </Grid> */}
+            <Grid item lg={12} md={12} xs={12}>
               <ParentCreateForm />
             </Grid>
           </Grid>

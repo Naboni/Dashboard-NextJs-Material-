@@ -15,6 +15,8 @@ const Students = () => {
   const user = useSelector(selectUser);
   const [students, setStudents] = useState([]);
   const [err, setErr] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const router = useRouter();
   if (!user) router.push("/login");
   useEffect(() => {
@@ -45,9 +47,9 @@ const Students = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar name="Students" />
+          <CustomerListToolbar name="Students" setSearchTerm={setSearchTerm} />
           <Box sx={{ mt: 3 }}>
-            <CustomerListResults customers={students} />
+            <CustomerListResults customers={students} searchTerm={searchTerm} />
           </Box>
         </Container>
       </Box>

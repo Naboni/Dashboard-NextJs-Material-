@@ -16,6 +16,7 @@ const Jobs = () => {
   const user = useSelector(selectUser);
   const [jobs, setJobs] = useState([]);
   const [err, setErr] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   if (user) {
     var token = user.accessToken;
   }
@@ -47,14 +48,22 @@ const Jobs = () => {
         }}
       >
         <Container maxWidth={false}>
-          <ProductListToolbar name="Jobs" />
+          <ProductListToolbar name="Jobs" setSearchTerm={setSearchTerm} />
           <Box sx={{ pt: 3 }}>
             <Grid container spacing={3}>
-              {jobs.map((product) => (
-                <Grid item key={product.id} lg={4} md={6} xs={12}>
-                  <ProductCard product={product} />
-                </Grid>
-              ))}
+              {jobs
+                .filter((val) => {
+                  if (searchTerm == "") {
+                    return val;
+                  } else if (val.location.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    return val;
+                  }
+                })
+                .map((product) => (
+                  <Grid item key={product.id} lg={4} md={6} xs={12}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ))}
             </Grid>
           </Box>
           <Box

@@ -8,15 +8,15 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
-import { Download as DownloadIcon } from "../../icons/download";
 import { Search as SearchIcon } from "../../icons/search";
 import { Upload as UploadIcon } from "../../icons/upload";
+import { Download as DownloadIcon } from "../../icons/download";
+import { useRouter } from "next/router";
 
-export const ProductListToolbar = (props) => {
+export const ParentListToolbar = (props) => {
   const router = useRouter();
-  const handleAddJob = () => {
-    router.push("/jobs/create-jobs");
+  const handleClick = (route) => {
+    router.push(route);
   };
   return (
     <Box {...props}>
@@ -39,7 +39,7 @@ export const ProductListToolbar = (props) => {
           <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
             Export
           </Button> */}
-          <Button color="primary" variant="contained" onClick={handleAddJob}>
+          <Button color="primary" variant="contained" onClick={(route) => handleClick(props.route)}>
             Add {props.name}
           </Button>
         </Box>
@@ -54,13 +54,13 @@ export const ProductListToolbar = (props) => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SvgIcon fontSize="small" color="action">
+                      <SvgIcon color="action" fontSize="small">
                         <SearchIcon />
                       </SvgIcon>
                     </InputAdornment>
                   ),
                 }}
-                placeholder="Search product"
+                placeholder="Search customer"
                 variant="outlined"
               />
             </Box>

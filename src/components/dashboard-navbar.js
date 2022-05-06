@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { logout, selectUser } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../../backend-utils/user-utils";
+import { getInitials } from "src/utils/get-initials";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -92,9 +93,11 @@ export const DashboardNavbar = (props) => {
               width: 40,
               ml: 1,
             }}
-            src="/static/images/avatars/avatar_1.png"
+            // src="/static/images/avatars/avatar_1.png"
           >
-            <UserCircleIcon fontSize="small" />
+            {/* <UserCircleIcon fontSize="small" /> */}
+            {getInitials(user.user.email)}
+            {/* {...stringAvatar('Kent Dodds')} */}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>

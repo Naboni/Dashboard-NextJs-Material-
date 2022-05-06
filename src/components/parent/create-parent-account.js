@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { selectUser } from "redux/userSlice";
 import { useSelector } from "react-redux";
-import { createParent } from "backend-utils/parent-utils";
+import { updateParent } from "backend-utils/parent-utils";
 import { useRouter } from "next/router";
 
 function getStyles(name, subjects, theme) {
@@ -43,11 +43,13 @@ const MenuProps = {
   },
 };
 
-export const ParentCreateForm = (props) => {
+export const CreateParentAccountForm = (props) => {
   const user = useSelector(selectUser);
   const router = useRouter();
+  console.log("kjbakjbdkaldadklan", props);
 
-  const [job, setJob] = useState(null);
+  const [parent, setParent] = useState(null);
+  const [initialValues, setInitialValues] = useState(null);
   const [loggingIn, setLoggingIn] = useState(false);
   const [err, setErr] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -59,16 +61,27 @@ export const ParentCreateForm = (props) => {
       isMounted.current = false;
     };
   }, []);
+  useEffect(() => {
+    setInitialValues({
+      id: props.parent?.id,
+      fullName: props.parent?.fullName,
+      phone1: props.parent?.phone1,
+      phone2: props.parent?.phone2,
+      location: props.parent?.location,
+      preferredBank: props.parent?.preferredBank,
+      profilePicture: props.parent?.profilePicture,
+    });
+  }, [props.parent]);
 
   const formik = useFormik({
     initialValues: {
-      fullName: "",
+      fullName: initialValues?.fullName,
       email: null,
-      phone1: "",
-      phone2: "",
-      location: "",
-      preferredBank: "",
-      profilePicture: "",
+      phone1: initialValues?.phone1,
+      phone2: initialValues?.phone2,
+      location: initialValues?.location,
+      preferredBank: initialValues?.preferredBank,
+      profilePicture: initialValues?.profilePicture,
     },
     validationSchema: Yup.object({
       fullName: Yup.string().max(255).required("Full name is required"),
@@ -86,12 +99,12 @@ export const ParentCreateForm = (props) => {
 
       const parentBody = { ...formik.values };
       console.log(parentBody);
-      createParent(user.accessToken, parentBody)
+      updateParent(user.accessToken, initialValues.id, parentBody)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           if (data.success) {
-            setJob(data.parent);
+            setParent(data.parent);
           } else {
             setErr(data.message);
           }

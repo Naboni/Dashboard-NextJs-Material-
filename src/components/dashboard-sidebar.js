@@ -9,6 +9,7 @@ import { Cog as CogIcon } from "../icons/cog";
 import { Lock as LockIcon } from "../icons/lock";
 import { Selector as SelectorIcon } from "../icons/selector";
 import { ShoppingBag as ShoppingBagIcon } from "../icons/shopping-bag";
+import { Upload as UploadIcon } from "../icons/upload";
 import { User as UserIcon } from "../icons/user";
 import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
@@ -53,6 +54,11 @@ const items = [
     href: "/jobs",
     icon: <ShoppingBagIcon fontSize="small" />,
     title: "Jobs",
+  },
+  {
+    href: "/reports",
+    icon: <UploadIcon fontSize="small" />,
+    title: "Reports",
   },
   {
     href: "/account",

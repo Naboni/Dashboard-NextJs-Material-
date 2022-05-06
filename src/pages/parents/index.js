@@ -3,19 +3,19 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Box, Container } from "@mui/material";
-import { CustomerListResults } from "src/components/customer/customer-list-results";
-import { CustomerListToolbar } from "src/components/customer/customer-list-toolbar";
 import { DashboardLayout } from "src/components/dashboard-layout";
-// import { customers } from "../__mocks__/customers";
 
 import { getParents } from "backend-utils/parent-utils";
 import { useSelector } from "react-redux";
 import { selectUser } from "redux/userSlice";
+import { ParentListResults } from "src/components/parent/parent-list-results";
+import { ParentListToolbar } from "src/components/parent/parent-list-toolbar";
 
 const Parents = () => {
   const user = useSelector(selectUser);
   const [parents, setParents] = useState([]);
   const [err, setErr] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   if (!user) router.push("/login");
   useEffect(() => {
@@ -32,6 +32,7 @@ const Parents = () => {
         setErr("Something went wrong");
       });
   }, []);
+
   return (
     <>
       <Head>
@@ -45,9 +46,13 @@ const Parents = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar name="Parents" route="/parents/create-parent" />
+          <ParentListToolbar
+            name="Parents"
+            setSearchTerm={setSearchTerm}
+            route="/parents/create-parent"
+          />
           <Box sx={{ mt: 3 }}>
-            <CustomerListResults customers={parents} />
+            <ParentListResults customers={parents} searchTerm={searchTerm} />
           </Box>
         </Container>
       </Box>

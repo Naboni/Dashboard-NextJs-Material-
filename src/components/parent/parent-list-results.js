@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
   Chip,
@@ -17,8 +18,11 @@ import {
   Typography,
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
+import { useRouter } from "next/router";
 
-export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
+export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
+  const router = useRouter();
+
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -82,10 +86,10 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
                 <TableCell>Location</TableCell>
                 <TableCell>Phone</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -129,13 +133,25 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{`${customer.location}`}</TableCell>
-                    <TableCell>{customer.phone}</TableCell>
+                    <TableCell>{customer.location}</TableCell>
+                    <TableCell>{customer.phone1}</TableCell>
                     <TableCell>
                       {customer.status === "SUCCESS" && <Chip label="SUCCESS" color="success" />}
                       {customer.status === "FAILED" && <Chip label="SUCCESS" color="error" />}
                       {customer.status === "PENDING" && <Chip label="PENDING" color="primary" />}
+                    </TableCell>
+                    <TableCell>
+                      {customer.email === null && (
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={() => {
+                            router.push("/parents/" + customer.id);
+                          }}
+                        >
+                          Create Account
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -156,6 +172,6 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
+ParentListResults.propTypes = {
   customers: PropTypes.array.isRequired,
 };

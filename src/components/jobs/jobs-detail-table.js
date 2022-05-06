@@ -5,9 +5,9 @@ import { format } from "date-fns";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Chip,
   Table,
   TableBody,
   TableCell,
@@ -17,11 +17,20 @@ import {
   Typography,
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
+import { updateJob } from "backend-utils/job-utils";
+import { useSelector } from "react-redux";
+import { selectUser } from "redux/userSlice";
+import { updateTutor } from "backend-utils/tutor-utils";
 
-export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
+export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) => {
+  const user = useSelector(selectUser);
+  if (user) {
+    var token = user.accessToken;
+  }
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [err, setErr] = useState("");
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -62,11 +71,68 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
+  const [hired, setHired] = useState(null);
+  const [status, setStatus] = useState("PENDING");
+  const handleHire = (tutorId) => {
+    console.log(jid, token);
+    try {
+      updateJob(token, jid, tutorId, "SUCCESS")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setHired(true);
+          // setStatus("SUCCESS");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      const jobId = parseInt(jid);
+      updateTutor(token, tutorId, jobId, "SUCCESS")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          // setHired(true);
+          setStatus("SUCCESS");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleUnHire = (tutorId) => {
+    console.log(jid, token);
+    try {
+      updateJob(token, jid, null, "PENDING")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setHired(false);
+          setStatus("PENDING");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      updateTutor(token, tutorId, null, "PENDING")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          // setHired(true);
+          setStatus("PENDING");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Card {...rest}>
       <PerfectScrollbar>
-        <Box sx={{ minWidth: 1050 }}>
+        <Box sx={{ minWidth: 750 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -82,10 +148,8 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -129,13 +193,29 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{`${customer.location}`}</TableCell>
-                    <TableCell>{customer.phone}</TableCell>
                     <TableCell>
-                      {customer.status === "SUCCESS" && <Chip label="SUCCESS" color="success" />}
-                      {customer.status === "FAILED" && <Chip label="SUCCESS" color="error" />}
-                      {customer.status === "PENDING" && <Chip label="PENDING" color="primary" />}
+                      {/* {format(customer.createdAt, 'dd/MM/yyyy')} */}
+                      {customer.status}
+                    </TableCell>
+                    <TableCell>
+                      {!hired && (
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={() => handleHire(customer.id)}
+                        >
+                          Hire
+                        </Button>
+                      )}
+                      {hired && (
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={() => handleUnHire(customer.id)}
+                        >
+                          Unhire
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -156,6 +236,6 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
+JobsDetailTable.propTypes = {
   customers: PropTypes.array.isRequired,
 };
