@@ -46,4 +46,15 @@ const createParent = async (token, parentBody) => {
   return response;
 };
 
-export { getParents, createParent, getAParent, updateParent };
+const deleteParent = async (token, id) => {
+  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
+export { getParents, createParent, getAParent, updateParent, deleteParent };

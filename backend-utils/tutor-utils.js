@@ -9,6 +9,17 @@ const getTutors = async (token) => {
   return response;
 };
 
+const getATutor = async (token, id) => {
+  const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
 const updateTutor = async (token, id, jobId, status) => {
   const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
     method: "PATCH",
@@ -24,4 +35,15 @@ const updateTutor = async (token, id, jobId, status) => {
   return response;
 };
 
-export { getTutors, updateTutor };
+const deleteTutor = async (token, id) => {
+  const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
+export { getTutors, updateTutor, deleteTutor, getATutor };

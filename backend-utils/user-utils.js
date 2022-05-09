@@ -1,5 +1,5 @@
 const signin = async (email, password) => {
-  const response = await fetch(`http://localhost:4000/api/v1/user/login`, {
+  const response = await fetch(`http://localhost:4000/api/v1/user/adminLogin`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

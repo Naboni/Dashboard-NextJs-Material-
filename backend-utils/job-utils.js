@@ -49,4 +49,14 @@ const createJob = async (token, jobBody) => {
   return response;
 };
 
-export { getJobs, createJob, getAJob, updateJob };
+const deleteJob = async (token, id) => {
+  const response = await fetch(`http://localhost:4000/api/v1/job/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+export { getJobs, createJob, getAJob, updateJob, deleteJob };

@@ -2,15 +2,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Box, Container } from "@mui/material";
-import { CustomerListResults } from "../components/customer/customer-list-results";
-import { CustomerListToolbar } from "../components/customer/customer-list-toolbar";
-import { DashboardLayout } from "../components/dashboard-layout";
-import { customers } from "../__mocks__/customers";
 import { useEffect, useState } from "react";
-import { getStudents } from "../../backend-utils/student-utils";
+import { getStudents } from "../../../backend-utils/student-utils";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
-
+import { selectUser } from "../../../redux/userSlice";
+import { DashboardLayout } from "src/components/dashboard-layout";
+import { StudentListToolbar } from "src/components/student/student-list-toolbar";
+import { StudentListResults } from "src/components/student/student-list-results";
 const Students = () => {
   const user = useSelector(selectUser);
   const [students, setStudents] = useState([]);
@@ -47,9 +45,13 @@ const Students = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar name="Students" setSearchTerm={setSearchTerm} />
+          <StudentListToolbar
+            name="Students"
+            setSearchTerm={setSearchTerm}
+            route="/students/create-student"
+          />
           <Box sx={{ mt: 3 }}>
-            <CustomerListResults customers={students} searchTerm={searchTerm} />
+            <StudentListResults customers={students} searchTerm={searchTerm} />
           </Box>
         </Container>
       </Box>

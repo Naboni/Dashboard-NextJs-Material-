@@ -3,14 +3,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Box, Container } from "@mui/material";
-import { CustomerListResults } from "../components/customer/customer-list-results";
-import { CustomerListToolbar } from "../components/customer/customer-list-toolbar";
-import { DashboardLayout } from "../components/dashboard-layout";
-import { customers } from "../__mocks__/customers";
-
-import { getTutors } from "../../backend-utils/tutor-utils";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
+import { selectUser } from "redux/userSlice";
+import { getTutors } from "backend-utils/tutor-utils";
+import { DashboardLayout } from "src/components/dashboard-layout";
+import { CustomerListResults } from "src/components/customer/customer-list-results";
+import { CustomerListToolbar } from "src/components/customer/customer-list-toolbar";
 
 const Tutors = () => {
   const user = useSelector(selectUser);

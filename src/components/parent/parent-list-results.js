@@ -9,6 +9,7 @@ import {
   Card,
   Checkbox,
   Chip,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -19,13 +20,22 @@ import {
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
 import { useRouter } from "next/router";
+import { deleteParent } from "backend-utils/parent-utils";
+import { useSelector } from "react-redux";
+import { selectUser } from "redux/userSlice";
+import { DeleteOutlined, MoreHorizSharp } from "@mui/icons-material";
 
 export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
+  const user = useSelector(selectUser);
   const router = useRouter();
+  if (user) {
+    var token = user.accessToken;
+  }
 
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [err, setErr] = useState("");
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -67,6 +77,18 @@ export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
     setPage(newPage);
   };
 
+  const handleDelete = (id) => {
+    deleteParent(token, id)
+      .then((res) => res.json())
+      .then((_data) => {
+        console.log("DDDDDDDDDDDDDDDDDD");
+        router.push("/parents");
+      })
+      .catch((_) => {
+        setErr("Something went wrong");
+      });
+  };
+
   return (
     <Card {...rest}>
       <PerfectScrollbar>
@@ -88,7 +110,7 @@ export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
                 <TableCell>Name</TableCell>
                 <TableCell>Location</TableCell>
                 <TableCell>Phone</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Email</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -135,12 +157,16 @@ export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
                     </TableCell>
                     <TableCell>{customer.location}</TableCell>
                     <TableCell>{customer.phone1}</TableCell>
+                    <TableCell>{customer.email}</TableCell>
                     <TableCell>
-                      {customer.status === "SUCCESS" && <Chip label="SUCCESS" color="success" />}
-                      {customer.status === "FAILED" && <Chip label="SUCCESS" color="error" />}
-                      {customer.status === "PENDING" && <Chip label="PENDING" color="primary" />}
-                    </TableCell>
-                    <TableCell>
+                      <IconButton
+                        color="error"
+                        aria-label="upload picture"
+                        component="span"
+                        onClick={() => handleDelete(customer.id)}
+                      >
+                        <DeleteOutlined />
+                      </IconButton>
                       {customer.email === null && (
                         <Button
                           color="primary"
@@ -152,6 +178,14 @@ export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
                           Create Account
                         </Button>
                       )}
+                      <IconButton
+                        color="info"
+                        aria-label="upload picture"
+                        component="span"
+                        onClick={() => router.push("/parents/profile/" + customer.id)}
+                      >
+                        <MoreHorizSharp />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

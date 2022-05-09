@@ -96,7 +96,7 @@ export const DashboardNavbar = (props) => {
             // src="/static/images/avatars/avatar_1.png"
           >
             {/* <UserCircleIcon fontSize="small" /> */}
-            {getInitials(user.user.email)}
+            {getInitials(user?.user.email)}
             {/* {...stringAvatar('Kent Dodds')} */}
           </Avatar>
         </Toolbar>

@@ -12,17 +12,20 @@ import { useRouter } from "next/router";
 // import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
 // import { DashboardLayout } from "../components/dashboard-layout";
 
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { DashboardLayout } from "src/components/dashboard-layout";
+import { logout, selectUser } from "../../redux/userSlice";
 import Dashboard from "./dashboard";
 import Login from "./login";
 
 const Loading = () => {
   const user = useSelector(selectUser);
-  // const router = useRouter();
-  // if (!user) {
-  //   router.push("/login");
-  // }
+  const router = useRouter();
+  const dispatch = useDispatch();
+  if (!user) {
+    dispatch(logout());
+    router.push("/login");
+  }
   return (
     <>
       <Head>
@@ -33,6 +36,6 @@ const Loading = () => {
   );
 };
 
-// Loading.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Loading.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Loading;

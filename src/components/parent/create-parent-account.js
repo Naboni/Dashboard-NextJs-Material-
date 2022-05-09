@@ -74,6 +74,7 @@ export const CreateParentAccountForm = (props) => {
   }, [props.parent]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       fullName: initialValues?.fullName,
       email: null,
@@ -140,7 +141,7 @@ export const CreateParentAccountForm = (props) => {
                 required
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.fullName}
+                value={formik.values.fullName || ""}
                 variant="outlined"
               />
             </Grid>
@@ -167,7 +168,7 @@ export const CreateParentAccountForm = (props) => {
                 rows={4}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.phone1}
+                value={formik.values.phone1 || ""}
                 variant="outlined"
               />
             </Grid>
@@ -181,7 +182,7 @@ export const CreateParentAccountForm = (props) => {
                 rows={4}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.phone2}
+                value={formik.values.phone2 || ""}
                 variant="outlined"
               />
             </Grid>
@@ -194,7 +195,7 @@ export const CreateParentAccountForm = (props) => {
                 name="location"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.location}
+                value={formik.values.location || ""}
                 variant="outlined"
               />
             </Grid>
@@ -207,7 +208,7 @@ export const CreateParentAccountForm = (props) => {
                 name="preferredBank"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.preferredBank}
+                value={formik.values.preferredBank || ""}
                 variant="outlined"
               />
             </Grid>

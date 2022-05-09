@@ -9,16 +9,36 @@ import {
   Typography,
   Button,
   Chip,
+  IconButton,
 } from "@mui/material";
 import { Clock as ClockIcon } from "../../icons/clock";
 import { Download as DownloadIcon } from "../../icons/download";
 import { Users as UsersIcons } from "../../icons/users";
 import { useRouter } from "next/router";
+import { deleteJob } from "backend-utils/job-utils";
+import { useSelector } from "react-redux";
+import { selectUser } from "redux/userSlice";
+import { DeleteOutlined } from "@mui/icons-material";
 
 export const ProductCard = ({ product, ...rest }) => {
+  const user = useSelector(selectUser);
   const router = useRouter();
+  if (user) {
+    var token = user.accessToken;
+  }
   const handleAddJob = (id) => {
     router.push("/jobs/" + id);
+  };
+  const handleDelete = (id) => {
+    deleteJob(token, id)
+      .then((res) => res.json())
+      .then((_data) => {
+        console.log("DDDDDDDDDDDDDDDDDD");
+        router.push("/parents");
+      })
+      .catch((_) => {
+        setErr("Something went wrong");
+      });
   };
   return (
     <Card
@@ -30,7 +50,7 @@ export const ProductCard = ({ product, ...rest }) => {
       {...rest}
     >
       <CardContent>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -43,7 +63,7 @@ export const ProductCard = ({ product, ...rest }) => {
             src="/static/images/products/product_3.png"
             variant="square"
           />
-        </Box>
+        </Box> */}
         {/* <Typography align="center" color="textPrimary" gutterBottom variant="h5">
         {product.title}
       </Typography> */}
@@ -94,17 +114,41 @@ export const ProductCard = ({ product, ...rest }) => {
               display: "flex",
             }}
           >
-            {/* <DownloadIcon color="action" />
-          <Typography color="textSecondary" display="inline" sx={{ pl: 1 }} variant="body2">
-            {product.totalDownloads} Downloads
-          </Typography> */}
-            <Button
-              onClick={() => handleAddJob(product.id)}
-              startIcon={<UsersIcons fontSize="small" />}
-              sx={{ mr: 1 }}
-            >
-              Applicants
-            </Button>
+            {product.status !== "SUCCESS" && (
+              <IconButton
+                color="error"
+                aria-label="upload picture"
+                component="span"
+                onClick={() => handleDelete(product.id)}
+              >
+                <DeleteOutlined />
+              </IconButton>
+            )}
+            {product.hiredTutorId ? (
+              product.tutors
+                .filter((tutor) => tutor.id == product.hiredTutorId)
+                .map((v) => {
+                  console.log("GGGGGGGGGGGGGGGg");
+                  console.log(v);
+                  return (
+                    <Button
+                      // onClick={() => handleAddJob(product.id)}
+                      // startIcon={<UsersIcons fontSize="small" />}
+                      sx={{ mr: 1 }}
+                    >
+                      Hired Tutor: {v.fullName}
+                    </Button>
+                  );
+                })
+            ) : (
+              <Button
+                onClick={() => handleAddJob(product.id)}
+                startIcon={<UsersIcons fontSize="small" />}
+                sx={{ mr: 1 }}
+              >
+                Applicants
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Box>

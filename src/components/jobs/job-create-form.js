@@ -21,6 +21,7 @@ import {
 import { selectUser } from "redux/userSlice";
 import { useSelector } from "react-redux";
 import { createJob } from "backend-utils/job-utils";
+import { useRouter } from "next/router";
 
 function getStyles(name, subjects, theme) {
   return {
@@ -43,8 +44,10 @@ const MenuProps = {
 };
 
 export const JobCreateForm = (props) => {
+  console.log("from create form, props:", props);
   const user = useSelector(selectUser);
   const theme = useTheme();
+  const router = useRouter();
 
   const [subjects, setSubjects] = useState([]);
   const [title, setTitle] = useState("");
@@ -56,6 +59,18 @@ export const JobCreateForm = (props) => {
   const [loggingIn, setLoggingIn] = useState(false);
   const [err, setErr] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [initialValues, setInitialValues] = useState({
+    title: "",
+    subtitle: "",
+    description: "",
+    location: "",
+    grade: "",
+    workDays: "",
+    workHour: "",
+    subjects: subjects,
+  });
+
+  console.log(subjects);
 
   const isMounted = useRef(false);
   useEffect(() => {
@@ -68,6 +83,8 @@ export const JobCreateForm = (props) => {
   const subjectsList = [
     "Mathematics",
     "English",
+    "Amharic",
+    "Afan Oromo",
     "Physics",
     "Biology",
     "Chemistry",
@@ -76,7 +93,23 @@ export const JobCreateForm = (props) => {
     "Music",
     "Art",
     "Programming",
+    "Web Development",
+    "App Development",
   ];
+  useEffect(() => {
+    if (props.studentData) {
+      setInitialValues({
+        title: "",
+        subtitle: "",
+        description: "",
+        location: props.studentData?.address,
+        grade: props.studentData?.grade,
+        workDays: props.studentData?.workDays,
+        workHour: props.studentData?.workHour,
+        subjects: props.studentData?.subjects,
+      });
+    }
+  }, [props.studentData]);
 
   const handleSelectChange = (e) => {
     const {
@@ -87,22 +120,21 @@ export const JobCreateForm = (props) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+  const handleOnSelectChange = (value) => {
+    setSubjects(value);
+  };
 
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      subtitle: "",
-      description: "",
-      location: "",
-      grade: "",
-      subjects: [],
-    },
+    enableReinitialize: true,
+    initialValues: initialValues,
     validationSchema: Yup.object({
-      title: Yup.string().max(255).required("Title is required"),
-      subtitle: Yup.string().max(255).required("Subtitle is required"),
+      title: Yup.string().max(255),
+      subtitle: Yup.string().max(255),
       location: Yup.string().max(255).required("Location is required"),
       description: Yup.string().max(255).required("Description is required"),
-      grade: Yup.string().max(255).required("Grade is required"),
+      grade: Yup.string().max(255),
+      workDays: Yup.number(),
+      workHour: Yup.number(),
       subjects: Yup.array().max(255).required("Subject is required"),
     }),
     onSubmit: () => {
@@ -110,7 +142,7 @@ export const JobCreateForm = (props) => {
       setErr("");
       setShowAlert(false);
 
-      const jobBody = { ...formik.values };
+      const jobBody = { ...formik.values, subjects: subjects };
       console.log(jobBody);
       createJob(user.accessToken, jobBody)
         .then((res) => res.json())
@@ -130,28 +162,11 @@ export const JobCreateForm = (props) => {
             // ? preserve memory leak
             // ? state is updated only if mounted
             setLoggingIn(false);
+            router.push("/jobs");
           }
         });
     },
   });
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-
-  //     createJob(user.accessToken, jobBody)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data);
-  //         if (data.success) {
-  //           setJob(data.job);
-  //         } else {
-  //           setErr(data.message);
-  //         }
-  //       })
-  //       .catch((_) => {
-  //         setErr("Something went wrong");
-  //       });
-  //   };
 
   return (
     <form autoComplete="off" noValidate {...props} onSubmit={formik.handleSubmit}>
@@ -162,40 +177,11 @@ export const JobCreateForm = (props) => {
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <TextField
-                error={Boolean(formik.touched.title && formik.errors.title)}
-                helperText={formik.touched.title && formik.errors.title}
-                fullWidth
-                label="Job Title"
-                name="title"
-                required
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.title}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                error={Boolean(formik.touched.subtitle && formik.errors.subtitle)}
-                helperText={formik.touched.subtitle && formik.errors.subtitle}
-                fullWidth
-                label="Job subtitle"
-                name="subtitle"
-                required
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.subtitle}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
                 error={Boolean(formik.touched.description && formik.errors.description)}
                 helperText={formik.touched.description && formik.errors.description}
                 fullWidth
                 label="Job description"
                 name="description"
-                required
                 multiline
                 rows={4}
                 onBlur={formik.handleBlur}
@@ -205,49 +191,6 @@ export const JobCreateForm = (props) => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                error={Boolean(formik.touched.location && formik.errors.location)}
-                helperText={formik.touched.location && formik.errors.location}
-                fullWidth
-                label="Location"
-                name="location"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.location}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                error={Boolean(formik.touched.grade && formik.errors.grade)}
-                helperText={formik.touched.grade && formik.errors.grade}
-                fullWidth
-                label="Grade"
-                name="grade"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.grade}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              {/* <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField> */}
               <InputLabel id="demo-multiple-chip-label">Subjects</InputLabel>
               <Select
                 error={Boolean(formik.touched.subjects && formik.errors.subjects)}
@@ -277,6 +220,89 @@ export const JobCreateForm = (props) => {
                   </MenuItem>
                 ))}
               </Select>
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.grade && formik.errors.grade)}
+                helperText={formik.touched.grade && formik.errors.grade}
+                fullWidth
+                label="Grade"
+                name="grade"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.grade}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.workDays && formik.errors.workDays)}
+                helperText={formik.touched.workDays && formik.errors.workDays}
+                fullWidth
+                label="workDays"
+                name="workDays"
+                type="number"
+                rows={4}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.workDays}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.workHour && formik.errors.workHour)}
+                helperText={formik.touched.workHour && formik.errors.workHour}
+                fullWidth
+                label="workHour"
+                name="workHour"
+                rows={4}
+                type="number"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.workHour}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.location && formik.errors.location)}
+                helperText={formik.touched.location && formik.errors.location}
+                fullWidth
+                label="Location"
+                name="location"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.location}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.title && formik.errors.title)}
+                helperText={formik.touched.title && formik.errors.title}
+                fullWidth
+                label="Comment"
+                name="title"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.title}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                error={Boolean(formik.touched.subtitle && formik.errors.subtitle)}
+                helperText={formik.touched.subtitle && formik.errors.subtitle}
+                fullWidth
+                label="Subtitle"
+                name="subtitle"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.subtitle}
+                variant="outlined"
+              />
             </Grid>
           </Grid>
         </CardContent>

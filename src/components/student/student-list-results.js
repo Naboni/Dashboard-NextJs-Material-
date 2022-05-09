@@ -5,10 +5,10 @@ import { format } from "date-fns";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
   Chip,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -16,15 +16,19 @@ import {
   TablePagination,
   TableRow,
   Typography,
+  IconButton,
 } from "@mui/material";
+import { DeleteOutlined } from "@mui/icons-material";
+
 import { getInitials } from "../../utils/get-initials";
-import { DeleteOutlined, DetailsSharp, MoreHorizSharp } from "@mui/icons-material";
-import { deleteTutor } from "backend-utils/tutor-utils";
+import { useRouter } from "next/router";
+import { deleteStudent, updateStudent } from "backend-utils/student-utils";
 import { useSelector } from "react-redux";
 import { selectUser } from "redux/userSlice";
-import { useRouter } from "next/router";
+import { deleteJob } from "backend-utils/job-utils";
+import { updateTutor } from "backend-utils/tutor-utils";
 
-export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
+export const StudentListResults = ({ customers, searchTerm, ...rest }) => {
   const user = useSelector(selectUser);
   const router = useRouter();
   if (user) {
@@ -76,15 +80,47 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   };
 
   const handleDelete = (id) => {
-    deleteTutor(token, id)
+    deleteStudent(token, id)
       .then((res) => res.json())
       .then((_data) => {
-        console.log("DDDDDDDDDDDDDDDDDD");
-        router.push("/tutors");
+        router.push("/student");
       })
       .catch((_) => {
         setErr("Something went wrong");
       });
+  };
+
+  const handleUnHire = (tutorId, studentId, jid) => {
+    console.log(jid, token);
+    try {
+      deleteJob(token, jid)
+        .then((res) => res.json())
+        .then((_data) => {
+          console.log("deleted");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      updateTutor(token, tutorId, null, "PENDING")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("updated tutor");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      updateStudent(token, studentId, null, "PENDING")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("updated student");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      router.push("/students");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -106,9 +142,9 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
+                <TableCell>Gender</TableCell>
                 <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
+                <TableCell>Grade</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
@@ -154,9 +190,9 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{`${customer.location}`}</TableCell>
-                    <TableCell>{customer.phone}</TableCell>
+                    <TableCell>{customer.gender}</TableCell>
+                    <TableCell>{customer.address}</TableCell>
+                    <TableCell>{customer.grade}</TableCell>
                     <TableCell>
                       {customer.status === "SUCCESS" && <Chip label="SUCCESS" color="success" />}
                       {customer.status === "FAILED" && <Chip label="SUCCESS" color="error" />}
@@ -171,14 +207,27 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
                       >
                         <DeleteOutlined />
                       </IconButton>
-                      <IconButton
-                        color="info"
-                        aria-label="upload picture"
-                        component="span"
-                        onClick={() => router.push("/tutors/" + customer.id)}
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => {
+                          router.push("/students/" + customer.id);
+                        }}
                       >
-                        <MoreHorizSharp />
-                      </IconButton>
+                        Post Job
+                      </Button>
+                      {customer.tutorId && (
+                        <Button
+                          sx={{ marginLeft: 1 }}
+                          color="error"
+                          variant="outlined"
+                          onClick={() =>
+                            handleUnHire(customer.tutorId, customer.id, customer.tutor.hiredJobId)
+                          }
+                        >
+                          Terminate Tutor
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -199,6 +248,6 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
+StudentListResults.propTypes = {
   customers: PropTypes.array.isRequired,
 };
