@@ -26,6 +26,7 @@ import { selectUser } from "redux/userSlice";
 import { updateTutor } from "backend-utils/tutor-utils";
 import { useRouter } from "next/router";
 import { getStudents, updateStudent } from "backend-utils/student-utils";
+import emailjs from "@emailjs/browser";
 
 export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) => {
   const router = useRouter();
@@ -95,15 +96,21 @@ export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) =>
   };
   const [hired, setHired] = useState(null);
   const [status, setStatus] = useState("PENDING");
-  const handleHire = (tutorId, studentId) => {
+  const handleHire = (tutorId, studentId, email) => {
     console.log(jid, token);
+    const templateParams = {
+      from_name: "Naboni",
+      sender_email: "naboni.abebe.m@gmail.com",
+      send_to: email,
+      message: "Congratulations, You have been Hired.",
+    };
+    console.log(templateParams);
     try {
       updateJob(token, jid, tutorId, "SUCCESS")
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           setHired(true);
-
           // setStatus("SUCCESS");
         })
         .catch((err) => {
@@ -130,6 +137,21 @@ export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) =>
         .catch((err) => {
           console.log(err);
         });
+      emailjs
+        .send(
+          process.env.EMAIL_SERVICE_ID,
+          process.env.EMAIL_TEMPLATE_ID,
+          templateParams,
+          process.env.EMAIL_PUBLIC_KEY
+        )
+        .then(
+          (response) => {
+            console.log("SUCCESS!", response.status, response.text);
+          },
+          (err) => {
+            console.log("FAILED...", err);
+          }
+        );
       router.push("/jobs");
     } catch (error) {
       console.log(error);
@@ -260,7 +282,7 @@ export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) =>
                             variant="contained"
                             // onClick={() => handleHire(customer.id)}
                             onClick={() => {
-                              handleHire(customer.id, tutee.id);
+                              handleHire(customer.id, tutee.id, customer.email);
                             }}
                           >
                             Hire

@@ -117,7 +117,7 @@ export const StudentListResults = ({ customers, searchTerm, ...rest }) => {
         .catch((err) => {
           console.log(err);
         });
-      router.push("/students");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
