@@ -128,7 +128,7 @@ const ParentDetail = () => {
           <Grid container spacing={3}>
             {parentData?.students.map((student, index) => {
               return (
-                <Grid item lg={6} md={6} xs={12}>
+                <Grid item lg={6} md={6} xs={12} key={index}>
                   <Card>
                     <CardContent>
                       <Box

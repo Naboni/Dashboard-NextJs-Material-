@@ -131,7 +131,7 @@ const TutorDetail = () => {
           <Grid container spacing={3}>
             {tutorData?.reports.map((report, index) => {
               return (
-                <Grid item lg={6} md={6} xs={12}>
+                <Grid item lg={6} md={6} xs={12} key={index}>
                   <Card>
                     <CardContent>
                       <Box
