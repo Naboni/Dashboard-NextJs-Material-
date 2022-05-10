@@ -136,11 +136,7 @@ const Login = () => {
               </Button>
             </Box>
           </form>
-          {err !== "" ? (
-            <Alert severity="error">{err}</Alert>
-          ) : (
-            <Alert severity="error">Error! Something Went Wrong.</Alert>
-          )}
+          {err !== "" && <Alert severity="error">{err}</Alert>}
         </Container>
       </Box>
     </>
