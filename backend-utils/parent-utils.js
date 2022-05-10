@@ -1,4 +1,4 @@
-import API_URL from "./url";
+import { API_URL } from "./url";
 
 const getParents = async (token) => {
   const response = await fetch(`${API_URL}api/v1/parent`, {

@@ -1,4 +1,4 @@
-import API_URL from "./url";
+import { API_URL } from "./url";
 
 const signin = async (email, password) => {
   const response = await fetch(`${API_URL}v1/user/adminLogin`, {
