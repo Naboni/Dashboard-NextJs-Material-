@@ -42,7 +42,6 @@ const JobDetail = () => {
         setErr("Something went wrong");
       });
   }, [jid]);
-  console.log("44444444444444444444", process.env.EMAIL_SERVICE_ID);
   return (
     <>
       <Head>

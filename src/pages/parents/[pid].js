@@ -29,7 +29,6 @@ const CreateParentAccount = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         setErr("Something went wrong");
       });
   }, [pid]);

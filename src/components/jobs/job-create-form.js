@@ -44,7 +44,6 @@ const MenuProps = {
 };
 
 export const JobCreateForm = (props) => {
-  console.log("from create form, props:", props);
   const user = useSelector(selectUser);
   const theme = useTheme();
   const router = useRouter();
@@ -69,8 +68,6 @@ export const JobCreateForm = (props) => {
     workHour: "",
     subjects: subjects,
   });
-
-  console.log(subjects);
 
   const isMounted = useRef(false);
   useEffect(() => {
@@ -143,11 +140,9 @@ export const JobCreateForm = (props) => {
       setShowAlert(false);
 
       const jobBody = { ...formik.values, subjects: subjects };
-      console.log(jobBody);
       createJob(user.accessToken, jobBody)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.success) {
             setJob(data.job);
           } else {

@@ -24,8 +24,6 @@ const Reports = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(user.accessToken);
-          console.log(data);
           setReports(data.users);
         } else {
           setErr(data.message);
@@ -35,7 +33,6 @@ const Reports = () => {
         setErr("Something went wrong");
       });
   }, []);
-  console.log(reports);
   return (
     <>
       <Head>

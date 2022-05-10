@@ -107,8 +107,6 @@ export const StudentCreateForm = (props) => {
     );
   };
 
-  console.log(subjects);
-
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -150,11 +148,9 @@ export const StudentCreateForm = (props) => {
       setShowAlert(false);
 
       const studentBody = { ...formik.values, subjects: subjects };
-      console.log(studentBody);
       createStudent(user.accessToken, studentBody)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.success) {
             setStudent(data.student);
           } else {
@@ -162,7 +158,6 @@ export const StudentCreateForm = (props) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           setErr("Something went wrong");
         })
         .finally(() => {

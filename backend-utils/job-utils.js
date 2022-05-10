@@ -1,5 +1,6 @@
+import API_URL from "./url";
 const getJobs = async (token) => {
-  const response = await fetch(`http://localhost:4000/api/v1/job`, {
+  const response = await fetch(`${API_URL}api/v1/job`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -10,7 +11,7 @@ const getJobs = async (token) => {
 };
 
 const getAJob = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/job/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/job/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +22,7 @@ const getAJob = async (token, id) => {
 };
 
 const updateJob = async (token, id, tutorId, status) => {
-  const response = await fetch(`http://localhost:4000/api/v1/job/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/job/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const updateJob = async (token, id, tutorId, status) => {
 };
 
 const createJob = async (token, jobBody) => {
-  const response = await fetch(`http://localhost:4000/api/v1/job`, {
+  const response = await fetch(`${API_URL}api/v1/job`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +51,7 @@ const createJob = async (token, jobBody) => {
 };
 
 const deleteJob = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/job/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/job/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

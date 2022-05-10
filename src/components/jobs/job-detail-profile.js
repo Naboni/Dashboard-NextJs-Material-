@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 export const JobDetailProfile = (props) => {
-  console.log(props);
   return (
     <Card {...props}>
       <CardContent>

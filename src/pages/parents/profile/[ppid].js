@@ -41,11 +41,9 @@ const ParentDetail = () => {
         }
       })
       .catch((err) => {
-        console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJ", err);
         setErr("Something went wrong");
       });
   }, [ppid]);
-  console.log("from sid: ", parentData);
   return (
     <>
       <Head>

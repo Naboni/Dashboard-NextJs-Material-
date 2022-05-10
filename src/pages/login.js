@@ -58,7 +58,6 @@ const Login = () => {
           }
         })
         .catch((_err) => {
-          console.log(_err);
           setErr("Something went wrong");
         })
         .finally(() => {

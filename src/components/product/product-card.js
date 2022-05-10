@@ -33,7 +33,6 @@ export const ProductCard = ({ product, ...rest }) => {
     deleteJob(token, id)
       .then((res) => res.json())
       .then((_data) => {
-        console.log("DDDDDDDDDDDDDDDDDD");
         router.push("/parents");
       })
       .catch((_) => {
@@ -128,8 +127,6 @@ export const ProductCard = ({ product, ...rest }) => {
               product.tutors
                 .filter((tutor) => tutor.id == product.hiredTutorId)
                 .map((v) => {
-                  console.log("GGGGGGGGGGGGGGGg");
-                  console.log(v);
                   return (
                     <Button
                       // onClick={() => handleAddJob(product.id)}

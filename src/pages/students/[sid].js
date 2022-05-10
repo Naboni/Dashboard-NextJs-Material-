@@ -29,11 +29,9 @@ const CreateJobFromStudent = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         setErr("Something went wrong");
       });
   }, [sid]);
-  console.log("from sid: ", studentData);
   return (
     <>
       <Head>

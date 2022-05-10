@@ -30,11 +30,9 @@ const TutorDetail = () => {
         }
       })
       .catch((err) => {
-        console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJ", err);
         setErr("Something went wrong");
       });
   }, [tid]);
-  console.log("from sid: ", tutorData);
   return (
     <>
       <Head>

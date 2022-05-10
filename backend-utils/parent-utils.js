@@ -1,5 +1,7 @@
+import API_URL from "./url";
+
 const getParents = async (token) => {
-  const response = await fetch(`http://localhost:4000/api/v1/parent`, {
+  const response = await fetch(`${API_URL}api/v1/parent`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -10,7 +12,7 @@ const getParents = async (token) => {
 };
 
 const getAParent = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/parent/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +23,7 @@ const getAParent = async (token, id) => {
 };
 
 const updateParent = async (token, id, parentBody) => {
-  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/parent/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +35,7 @@ const updateParent = async (token, id, parentBody) => {
 };
 
 const createParent = async (token, parentBody) => {
-  const response = await fetch(`http://localhost:4000/api/v1/parent`, {
+  const response = await fetch(`${API_URL}api/v1/parent`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,7 +49,7 @@ const createParent = async (token, parentBody) => {
 };
 
 const deleteParent = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/parent/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/parent/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

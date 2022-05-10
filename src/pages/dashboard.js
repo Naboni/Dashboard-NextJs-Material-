@@ -79,7 +79,6 @@ const Dashboard = () => {
         setErr("Something went wrong");
       });
   }, []);
-  console.log(parents.length, jobs.length, tutors.length, reports.length);
 
   return (
     <>

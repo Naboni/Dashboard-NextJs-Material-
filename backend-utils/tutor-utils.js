@@ -1,5 +1,7 @@
+import API_URL from "./url";
+
 const getTutors = async (token) => {
-  const response = await fetch(`http://localhost:4000/api/v1/tutor`, {
+  const response = await fetch(`${API_URL}api/v1/tutor`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -10,7 +12,7 @@ const getTutors = async (token) => {
 };
 
 const getATutor = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/tutor/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +23,7 @@ const getATutor = async (token, id) => {
 };
 
 const updateTutor = async (token, id, jobId, status) => {
-  const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/tutor/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +38,7 @@ const updateTutor = async (token, id, jobId, status) => {
 };
 
 const deleteTutor = async (token, id) => {
-  const response = await fetch(`http://localhost:4000/api/v1/tutor/${id}`, {
+  const response = await fetch(`${API_URL}api/v1/tutor/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

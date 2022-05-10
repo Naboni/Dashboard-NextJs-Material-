@@ -97,45 +97,38 @@ export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) =>
   const [hired, setHired] = useState(null);
   const [status, setStatus] = useState("PENDING");
   const handleHire = (tutorId, studentId, email) => {
-    console.log(jid, token);
     const templateParams = {
       from_name: "Naboni",
       sender_email: "naboni.abebe.m@gmail.com",
       send_to: email,
       message: "Congratulations, You have been Hired.",
     };
-    console.log(templateParams);
     try {
       updateJob(token, jid, tutorId, "SUCCESS")
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setHired(true);
           // setStatus("SUCCESS");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       const jobId = parseInt(jid);
       updateTutor(token, tutorId, jobId, "SUCCESS")
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          // setHired(true);
           setStatus("SUCCESS");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       updateStudent(token, studentId, tutorId, "SUCCESS")
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          // setHired(true);
           setStatus("SUCCESS");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       emailjs
         .send(
@@ -154,7 +147,7 @@ export const JobsDetailTable = ({ jid, job, customers, searchTerm, ...rest }) =>
         );
       router.push("/jobs");
     } catch (error) {
-      console.log(error);
+      setErr(error);
     }
   };
 

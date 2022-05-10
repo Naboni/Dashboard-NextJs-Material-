@@ -46,7 +46,6 @@ const MenuProps = {
 export const CreateParentAccountForm = (props) => {
   const user = useSelector(selectUser);
   const router = useRouter();
-  console.log("kjbakjbdkaldadklan", props);
 
   const [parent, setParent] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
@@ -99,11 +98,9 @@ export const CreateParentAccountForm = (props) => {
       setShowAlert(false);
 
       const parentBody = { ...formik.values };
-      console.log(parentBody);
       updateParent(user.accessToken, initialValues.id, parentBody)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.success) {
             setParent(data.parent);
           } else {

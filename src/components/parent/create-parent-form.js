@@ -85,11 +85,9 @@ export const ParentCreateForm = (props) => {
       setShowAlert(false);
 
       const parentBody = { ...formik.values };
-      console.log(parentBody);
       createParent(user.accessToken, parentBody)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.success) {
             setJob(data.parent);
           } else {

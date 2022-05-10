@@ -91,7 +91,6 @@ export const StudentListResults = ({ customers, searchTerm, ...rest }) => {
   };
 
   const handleUnHire = (tutorId, studentId, jid) => {
-    console.log(jid, token);
     try {
       deleteJob(token, jid)
         .then((res) => res.json())
@@ -99,27 +98,27 @@ export const StudentListResults = ({ customers, searchTerm, ...rest }) => {
           console.log("deleted");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       updateTutor(token, tutorId, null, "PENDING")
         .then((res) => res.json())
-        .then((data) => {
+        .then((_data) => {
           console.log("updated tutor");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       updateStudent(token, studentId, null, "PENDING")
         .then((res) => res.json())
-        .then((data) => {
+        .then((_data) => {
           console.log("updated student");
         })
         .catch((err) => {
-          console.log(err);
+          setErr(err);
         });
       router.push("/");
     } catch (error) {
-      console.log(error);
+      setErr(error);
     }
   };
 

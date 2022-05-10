@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 export const TutorProfile = (props) => {
-  console.log(props);
   const user = {
     avatar: "/static/images/avatars/avatar_6.png",
     city: "Addis Ababa",

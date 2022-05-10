@@ -34,7 +34,6 @@ const Jobs = () => {
         setErr("Something went wrong");
       });
   }, []);
-  console.log(jobs);
   return (
     <>
       <Head>

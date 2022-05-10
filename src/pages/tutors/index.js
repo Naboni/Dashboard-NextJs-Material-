@@ -31,7 +31,6 @@ const Tutors = () => {
         setErr("Something went wrong");
       });
   }, []);
-  console.log(tutors);
 
   return (
     <>

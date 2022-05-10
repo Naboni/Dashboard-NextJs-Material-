@@ -1,5 +1,7 @@
+import API_URL from "./url";
+
 const signin = async (email, password) => {
-  const response = await fetch(`http://localhost:4000/api/v1/user/adminLogin`, {
+  const response = await fetch(`${API_URL}v1/user/adminLogin`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -11,7 +13,7 @@ const signin = async (email, password) => {
 };
 
 const signout = async (accessToken, token) => {
-  const response = await fetch(`http://localhost:4000/api/v1/user/logout`, {
+  const response = await fetch(`${API_URL}v1/user/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -81,7 +81,6 @@ export const ParentListResults = ({ customers, searchTerm, ...rest }) => {
     deleteParent(token, id)
       .then((res) => res.json())
       .then((_data) => {
-        console.log("DDDDDDDDDDDDDDDDDD");
         router.push("/parents");
       })
       .catch((_) => {

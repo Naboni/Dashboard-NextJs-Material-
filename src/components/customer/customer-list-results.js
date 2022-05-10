@@ -79,7 +79,6 @@ export const CustomerListResults = ({ customers, searchTerm, ...rest }) => {
     deleteTutor(token, id)
       .then((res) => res.json())
       .then((_data) => {
-        console.log("DDDDDDDDDDDDDDDDDD");
         router.push("/tutors");
       })
       .catch((_) => {
