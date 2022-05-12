@@ -22,7 +22,7 @@ const Loading = () => {
   const user = useSelector(selectUser);
   const router = useRouter();
   const dispatch = useDispatch();
-  if (!user.user) {
+  if (!user) {
     dispatch(logout());
     router.push("/login");
   }

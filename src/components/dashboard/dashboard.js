@@ -29,6 +29,11 @@ const Dashboard = () => {
   const [reports, setReports] = useState([]);
   const [err, setErr] = useState("");
 
+  if (!user) {
+    dispatch(logout());
+    router.push("/login");
+  }
+
   useEffect(() => {
     getTutors(user.accessToken)
       .then((res) => res.json())
