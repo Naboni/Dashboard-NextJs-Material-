@@ -22,18 +22,27 @@ const Loading = () => {
   const user = useSelector(selectUser);
   const router = useRouter();
   const dispatch = useDispatch();
-  if (!user) {
+  if (user == null) {
     dispatch(logout());
     router.push("/login");
+    return (
+      <>
+        <Head>
+          <title>Dashboard | Temaribet</title>
+        </Head>
+        <Login />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Head>
+          <title>Dashboard | Temaribet</title>
+        </Head>
+        <Dashboard />
+      </>
+    );
   }
-  return (
-    <>
-      <Head>
-        <title>Dashboard | Temaribet</title>
-      </Head>
-      {user ? <Dashboard /> : <Login />}
-    </>
-  );
 };
 
 Loading.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
