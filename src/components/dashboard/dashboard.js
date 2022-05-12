@@ -83,7 +83,7 @@ const Dashboard = () => {
       .catch((_) => {
         setErr("Something went wrong");
       });
-  }, []);
+  }, [user]);
 
   return (
     <>
