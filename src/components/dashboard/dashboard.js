@@ -12,13 +12,14 @@ import { TotalProfit } from "../components/dashboard/total-profit";
 import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
 import { DashboardLayout } from "../components/dashboard-layout";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
 import { useEffect, useState } from "react";
 import { getTutors } from "backend-utils/tutor-utils";
 import { getParents } from "backend-utils/parent-utils";
 import { getJobs } from "backend-utils/job-utils";
 import { getReports } from "backend-utils/report-utils";
+import { logout } from "redux/userSlice";
 
 const Dashboard = () => {
   const user = useSelector(selectUser);
@@ -28,7 +29,7 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [reports, setReports] = useState([]);
   const [err, setErr] = useState("");
-
+  const dispatch = useDispatch();
   if (user == null) {
     dispatch(logout());
     router.push("/login");

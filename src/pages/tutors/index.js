@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Box, Container } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectUser } from "redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "redux/userSlice";
 import { getTutors } from "backend-utils/tutor-utils";
 import { DashboardLayout } from "src/components/dashboard-layout";
 import { CustomerListResults } from "src/components/customer/customer-list-results";
@@ -16,7 +16,11 @@ const Tutors = () => {
   const [err, setErr] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-  if (!user) router.push("/login");
+  const dispatch = useDispatch();
+  if (!user) {
+    dispatch(logout());
+    router.push("/login");
+  }
   useEffect(() => {
     getTutors(user.accessToken)
       .then((res) => res.json())
