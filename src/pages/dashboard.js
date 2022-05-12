@@ -12,8 +12,8 @@ import { TotalProfit } from "../components/dashboard/total-profit";
 import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
 import { DashboardLayout } from "../components/dashboard-layout";
 
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "../../redux/userSlice";
 import { useEffect, useState } from "react";
 import { getTutors } from "backend-utils/tutor-utils";
 import { getParents } from "backend-utils/parent-utils";
@@ -28,14 +28,16 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [reports, setReports] = useState([]);
   const [err, setErr] = useState("");
+  const dispatch = useDispatch();
 
   if (user == null) {
     dispatch(logout());
     router.push("/login");
     return;
   } else {
+    var token = user.accessToken;
     useEffect(() => {
-      getTutors(user.accessToken)
+      getTutors(token)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -47,7 +49,7 @@ const Dashboard = () => {
         .catch((_) => {
           setErr("Something went wrong");
         });
-      getParents(user.accessToken)
+      getParents(token)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -59,7 +61,7 @@ const Dashboard = () => {
         .catch((_) => {
           setErr("Something went wrong");
         });
-      getJobs(user.accessToken)
+      getJobs(token)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -71,7 +73,7 @@ const Dashboard = () => {
         .catch((_) => {
           setErr("Something went wrong");
         });
-      getReports(user.accessToken)
+      getReports(token)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
