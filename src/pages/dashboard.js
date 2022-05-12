@@ -29,56 +29,62 @@ const Dashboard = () => {
   const [reports, setReports] = useState([]);
   const [err, setErr] = useState("");
 
-  useEffect(() => {
-    getTutors(user.accessToken)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setTutors(data.users);
-        } else {
-          setErr(data.message);
-        }
-      })
-      .catch((_) => {
-        setErr("Something went wrong");
-      });
-    getParents(user.accessToken)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setParents(data.users);
-        } else {
-          setErr(data.message);
-        }
-      })
-      .catch((_) => {
-        setErr("Something went wrong");
-      });
-    getJobs(user.accessToken)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setJobs(data.users);
-        } else {
-          setErr(data.message);
-        }
-      })
-      .catch((_) => {
-        setErr("Something went wrong");
-      });
-    getReports(user.accessToken)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setReports(data.users);
-        } else {
-          setErr(data.message);
-        }
-      })
-      .catch((_) => {
-        setErr("Something went wrong");
-      });
-  }, []);
+  if (user == null) {
+    dispatch(logout());
+    router.push("/login");
+    return;
+  } else {
+    useEffect(() => {
+      getTutors(user.accessToken)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setTutors(data.users);
+          } else {
+            setErr(data.message);
+          }
+        })
+        .catch((_) => {
+          setErr("Something went wrong");
+        });
+      getParents(user.accessToken)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setParents(data.users);
+          } else {
+            setErr(data.message);
+          }
+        })
+        .catch((_) => {
+          setErr("Something went wrong");
+        });
+      getJobs(user.accessToken)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setJobs(data.users);
+          } else {
+            setErr(data.message);
+          }
+        })
+        .catch((_) => {
+          setErr("Something went wrong");
+        });
+      getReports(user.accessToken)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setReports(data.users);
+          } else {
+            setErr(data.message);
+          }
+        })
+        .catch((_) => {
+          setErr("Something went wrong");
+        });
+    }, []);
+  }
 
   return (
     <>
